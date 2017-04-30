@@ -1,0 +1,42 @@
+---
+- name: copy panda apps
+  synchronize: src={{ item.appname }} dest=/tmp/
+  register: copy_finished
+  with_items: "{{ apps }}"
+    
+#change apps dirs ownership, group and mode.
+- file:
+    path: /tmp/{{ item.appname }}
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  with_items: "{{ apps }}"
+
+#this will npm install dependencies from json file
+- name: apps npm install
+  npm: path=/tmp/{{ item.appname }}
+  with_items: "{{ apps }}"
+  register: npm_done
+#  when: copy_finished.changed
+
+#stopping the apps before starting them again
+- name: stop apps
+  command: pm2 stop --name {{ item.appname }} /tmp/{{ item.appname }}/bin/www
+  args:
+    chdir: /tmp/{{ item.appname }}
+  with_items: "{{ apps }}"
+  ignore_errors: yes
+  become: true
+  become_user: vagrant
+
+#starting the apps after changes
+- name: start apps
+  command: pm2 start --name {{ item.appname }} /tmp/{{ item.appname }}/bin/www
+  args:
+    chdir: /tmp/{{ item.appname }}
+  with_items: "{{ apps }}"
+  ignore_errors: yes
+  become: true
+  become_user: vagrant
+#  when: npm_done.changed 

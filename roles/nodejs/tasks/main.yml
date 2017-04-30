@@ -1,8 +1,28 @@
 ---
-- name: Install dependencies
+- name: download node 6 repo install script
+  get_url:
+    url: http://deb.nodesource.com/setup_6.x
+    dest: /tmp/
+    mode: 0755
+
+- name: Check if node is installed
+  become: yes
+  shell: dpkg-query -s nodejs | grep 'install ok installed'
+  ignore_errors: True
+  register: nodejs_check
+
+- name: Install node6 dep script, only if it hasn't been run before
+  become: yes
+  shell: /tmp/setup_6.x
+  when: nodejs_check.rc == 1
+
+- name: Install node dependencies
   become: yes
   apt: pkg={{item}} state=installed
   with_items:
     - nodejs
-    - npm
 
+- name: Install "pm2" node.js package globally.
+  npm:
+    name: pm2
+    global: yes

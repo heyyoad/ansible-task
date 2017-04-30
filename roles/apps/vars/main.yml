@@ -1,0 +1,3 @@
+apps:
+  - {appname: "gify-panda"}
+  - {appname: "counter-panda"}
