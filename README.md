@@ -13,5 +13,19 @@ So what i've done is basically:
 
 #### Script
 * Should be run with "python panda_wrapper.py"
+* You should define the hostname dns for the "base" machines in your /etc/hosts file. (e.g base 172.28.128.3)
 * Please check the config.ini file! and change config parameters according to your environment
-* I know it's not the most generic script in the world :) but just a small wrapper for those services with option for ooping later on for making it more generic and expandable
+* I know it's not the most generic script in the world :) but just a small wrapper for those services asked, with an option for OOPing later on - for making it more generic and expandable
+
+#### Last note
+I've noticed the following vagrant error i had from the beginning: 
+
+"ERROR! Attempted to execute "/home/user/panda/devops-exercise1.git/dev/hosts" as inventory script: Inventory script (/home/user/panda/devops-exercise1.git/dev/hosts) had an execution error: Traceback (most recent call last):
+  File "/home/user/panda/devops-exercise1.git/dev/hosts", line 100, in <module>
+    ssh_host = get_ip(machine_id, provider)
+  File "/home/user/panda/devops-exercise1.git/dev/hosts", line 62, in get_ip
+    raise RuntimeError("No IP for NIC %d machine %s" % (nic_id, machine_id))
+RuntimeError: No IP for NIC 2 machine 11946f92-68d6-4486-8ec1-e64e5e75b639"
+ 
+It seems like vagrant doesn't finish the deployment process before running the playbook.
+running vagrant provision again seems to work well.
