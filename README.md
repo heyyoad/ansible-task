@@ -18,7 +18,7 @@ So what i've done is basically:
 * I know it's not the most generic script in the world :) but just a small wrapper for those services asked, with an option for OOPing later on - for making it more generic and expandable
 
 #### Last note
-I've noticed the following vagrant error i had from the beginning: 
+I've noticed the following vagrant error i had from the beginning when running "vagrant up": 
 
 "ERROR! Attempted to execute "/home/user/panda/devops-exercise1.git/dev/hosts" as inventory script: Inventory script (/home/user/panda/devops-exercise1.git/dev/hosts) had an execution error: Traceback (most recent call last):
   File "/home/user/panda/devops-exercise1.git/dev/hosts", line 100, in <module>
